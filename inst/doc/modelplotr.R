@@ -1,4 +1,4 @@
-## ----setup, include = FALSE----------------------------------------------
+## ----setup, include = FALSE---------------------------------------------------
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>"
@@ -6,40 +6,40 @@ knitr::opts_chunk$set(
 library(modelplotr)
 library(kableExtra)
 
-## ----pressure, echo=FALSE, fig.cap="Cartoon ROC plot", out.width = '100%'----
+## ----pressure, echo=FALSE, fig.cap="Cartoon ROC plot", out.width = '100%'-----
 knitr::include_graphics("https://modelplot.github.io/img/cartoonrocplot.jpg")
 
-## ----decileplot, echo=FALSE, out.width = '100%'--------------------------
+## ----decileplot, echo=FALSE, out.width = '100%'-------------------------------
 knitr::include_graphics("https://modelplot.github.io/img/decileplot.png")
 
-## ----cumgainsplot, echo=FALSE, out.width = '100%'------------------------
+## ----cumgainsplot, echo=FALSE, out.width = '100%'-----------------------------
 knitr::include_graphics("https://modelplot.github.io/img/cumgainsplot.png")
 
-## ----cumliftplot, echo=FALSE, out.width = '100%'-------------------------
+## ----cumliftplot, echo=FALSE, out.width = '100%'------------------------------
 knitr::include_graphics("https://modelplot.github.io/img/cumliftplot.png")
 
-## ----responseplot, echo=FALSE, out.width = '100%'------------------------
+## ----responseplot, echo=FALSE, out.width = '100%'-----------------------------
 knitr::include_graphics("https://modelplot.github.io/img/responseplot.png")
 
-## ----cumresponseplot, echo=FALSE, out.width = '100%'---------------------
+## ----cumresponseplot, echo=FALSE, out.width = '100%'--------------------------
 knitr::include_graphics("https://modelplot.github.io/img/cumresponseplot.png")
 
-## ----costsrevsplot, echo=FALSE, out.width = '100%'-----------------------
+## ----costsrevsplot, echo=FALSE, out.width = '100%'----------------------------
 knitr::include_graphics("https://modelplot.github.io/img/costsrevsplot.png")
 
-## ----profitplot, echo=FALSE, out.width = '100%'--------------------------
+## ----profitplot, echo=FALSE, out.width = '100%'-------------------------------
 knitr::include_graphics("https://modelplot.github.io/img/profitplot.png")
 
-## ----roiplot, echo=FALSE, out.width = '100%'-----------------------------
+## ----roiplot, echo=FALSE, out.width = '100%'----------------------------------
 knitr::include_graphics("https://modelplot.github.io/img/roiplot.png")
 
-## ----loaddata, echo=TRUE-------------------------------------------------
+## ----loaddata, echo=TRUE------------------------------------------------------
 # load example data (Bank clients that have/have not subscribed a term deposit - see ?bank_td for details)
 data("bank_td")
 
 str(bank_td)
 
-## ----trainmodels, echo=TRUE----------------------------------------------
+## ----trainmodels, echo=TRUE---------------------------------------------------
 # prepare data for training model for binomial target has_td and train models
 train_index =  base::sample(seq(1, nrow(bank_td)),size = 0.5*nrow(bank_td) ,replace = FALSE)
 train = bank_td[train_index,c('has_td','duration','campaign','pdays','previous','euribor3m')]
@@ -59,7 +59,7 @@ fitControl <- caret::trainControl(method = "cv",number = 2,classProbs=TRUE)
 # mnl model using glmnet package
 mnl = caret::train(has_td ~.,data = train, method = "glmnet",trControl = fitControl)
 
-## ----h2o_keras, echo=TRUE, eval=FALSE------------------------------------
+## ----h2o_keras, echo=TRUE, eval=FALSE-----------------------------------------
 #  #.. or train models using h2o... [NOT RUN]
 #  h2o::h2o.init()
 #  h2o::h2o.no_progress()
@@ -80,7 +80,7 @@ mnl = caret::train(has_td ~.,data = train, method = "glmnet",trControl = fitCont
 #  nn %>% keras::fit(x_train,y_train,epochs = 20,batch_size = 1028,verbose=0)
 #  
 
-## ----psn_params, echo=FALSE----------------------------------------------
+## ----psn_params, echo=FALSE---------------------------------------------------
 # prepare data
 text_tbl <- data.frame(
   Parameter = c('datasets *','dataset_labels' , 'models *','model_labels','target_column *','ntiles'),
@@ -100,7 +100,7 @@ kable(text_tbl) %>%
   
 
 
-## ----prepdata, echo=TRUE-------------------------------------------------
+## ----prepdata, echo=TRUE------------------------------------------------------
 
 # prepare data (for h2o/keras: add "gbm" and "nn" to models and nice labels to model_labels params)
 
@@ -112,13 +112,13 @@ scores_and_ntiles <- prepare_scores_and_ntiles(datasets=list("train","test"),
                       ntiles = 100)
 
 
-## ----df_sd,echo=FALSE----------------------------------------------------
+## ----df_sd,echo=FALSE---------------------------------------------------------
 scores_and_ntiles %>%
   head(5)%>%
   kable(row.names = FALSE) %>%
   kableExtra::kable_styling(font_size = 10,full_width = FALSE,position="left")
 
-## ----scopes, echo=FALSE--------------------------------------------------
+## ----scopes, echo=FALSE-------------------------------------------------------
 # prepare data
 text_tbl <- data.frame(
   Scope = c('"no_comparison" (default)','"compare_models"' , '"compare_datasets"','"compare_targetclasses"'),
@@ -136,7 +136,7 @@ kable(text_tbl) %>%
   
 
 
-## ----ps_params, echo=FALSE-----------------------------------------------
+## ----ps_params, echo=FALSE----------------------------------------------------
 # prepare data
 text_tbl <- data.frame(
   Parameter = c('prepared_input *','scope' , 'select_model_label','select_dataset_label','select_targetclass','select_smallest_targetclass'),
@@ -156,14 +156,14 @@ kable(text_tbl) %>%
   
 
 
-## ----pi,echo=TRUE--------------------------------------------------------
+## ----pi,echo=TRUE-------------------------------------------------------------
 #generate input data frame for all plots in modelplotr
 plot_input <- plotting_scope(prepared_input = scores_and_ntiles)
 
-## ----modelplotr_process, echo=FALSE, out.width = '100%'------------------
+## ----modelplotr_process, echo=FALSE, out.width = '100%'-----------------------
 knitr::include_graphics("https://modelplot.github.io/img/modelplotr_process.png")
 
-## ----custinput_2, echo=FALSE, out.width = '100%'-------------------------
+## ----custinput_2, echo=FALSE, out.width = '100%'------------------------------
 # prepare data
 text_tbl <- data.frame(
   column = c('model_label','dataset_label','y_true','prob_[tv1]','prob_[tv2]','...',
@@ -182,7 +182,7 @@ kable(text_tbl) %>%
   
 
 
-## ----custinput_3, echo=FALSE, out.width = '100%'-------------------------
+## ----custinput_3, echo=FALSE, out.width = '100%'------------------------------
 # prepare data
 text_tbl <- data.frame(
   column = c('model_label','dataset_label','target_class','ntile','neg','pos','tot','pct','negtot','postot','tottot','pcttot',
@@ -203,10 +203,10 @@ kable(text_tbl) %>%
   
 
 
-## ----plot_cg,echo=TRUE, fig.width=7.2,fig.height=5-----------------------
+## ----plot_cg,echo=TRUE, fig.width=7.2,fig.height=5----------------------------
 plot_cumgains(data = plot_input)
 
-## ----plot_cl_r_cr,echo=TRUE, fig.width=7.2,fig.height=5,eval=FALSE-------
+## ----plot_cl_r_cr,echo=TRUE, fig.width=7.2,fig.height=5,eval=FALSE------------
 #  #Cumulative lift
 #  plot_cumlift(data = plot_input)
 #  
@@ -216,7 +216,7 @@ plot_cumgains(data = plot_input)
 #  #Cumulative response plot
 #  plot_cumresponse(data = plot_input)
 
-## ----decrease_ntile, echo=FALSE------------------------------------------
+## ----decrease_ntile, echo=FALSE-----------------------------------------------
 # prepare data
 scores_and_ntiles2 <- prepare_scores_and_ntiles(datasets=list("train","test"),
                       dataset_labels = list("train data","test data"),
@@ -226,13 +226,13 @@ scores_and_ntiles2 <- prepare_scores_and_ntiles(datasets=list("train","test"),
                       ntiles = 10)
 plot_input <- plotting_scope(prepared_input = scores_and_ntiles2)
 
-## ----plot_multi,echo=TRUE, fig.width=7.2,fig.height=5--------------------
+## ----plot_multi,echo=TRUE, fig.width=7.2,fig.height=5-------------------------
 plot_multiplot(data = plot_input)
 
-## ----increase_ntile, echo=FALSE------------------------------------------
+## ----increase_ntile, echo=FALSE-----------------------------------------------
 plot_input <- plotting_scope(prepared_input = scores_and_ntiles)
 
-## ----fin_params, echo=FALSE----------------------------------------------
+## ----fin_params, echo=FALSE---------------------------------------------------
 # prepare data
 text_tbl <- data.frame(
   Parameter = c('fixed_costs','variable_costs_per_unit','profit_per_unit'),
@@ -249,10 +249,10 @@ kable(text_tbl) %>%
   
 
 
-## ----plot_roi,echo=TRUE, fig.width=7.2,fig.height=5----------------------
+## ----plot_roi,echo=TRUE, fig.width=7.2,fig.height=5---------------------------
 plot_roi(data = plot_input,fixed_costs = 1000,variable_costs_per_unit = 10,profit_per_unit = 50)
 
-## ----plot_costrev_profit,echo=TRUE, fig.width=7.2,fig.height=5-----------
+## ----plot_costrev_profit,echo=TRUE, fig.width=7.2,fig.height=5----------------
 
 #Costs & Revenues plot, highlighted at max roi instead of max profit
 plot_costsrevs(data = plot_input,fixed_costs = 1000,variable_costs_per_unit = 10,profit_per_unit = 50,highlight_ntile = "max_roi")
@@ -261,13 +261,13 @@ plot_costsrevs(data = plot_input,fixed_costs = 1000,variable_costs_per_unit = 10
 plot_profit(data = plot_input,fixed_costs = 1000,variable_costs_per_unit = 10,profit_per_unit = 50,highlight_ntile = 5)
 
 
-## ----plot_cgh,echo=TRUE, fig.width=7.2,fig.height=5----------------------
+## ----plot_cgh,echo=TRUE, fig.width=7.2,fig.height=5---------------------------
 plot_cumgains(data = plot_input,highlight_ntile = 20)
 
-## ----plot_crhh,echo=TRUE, fig.width=7.2,fig.height=5---------------------
+## ----plot_crhh,echo=TRUE, fig.width=7.2,fig.height=5--------------------------
 plot_cumresponse(data = plot_input,highlight_ntile = 20,highlight_how = 'plot')
 
-## ----customtext,echo=TRUE------------------------------------------------
+## ----customtext,echo=TRUE-----------------------------------------------------
 my_text <- customize_plot_text(plot_input=plot_input)
 
 #explore default values for the cumulative response plot:
@@ -282,10 +282,10 @@ my_text$cumresponse$annotationtext <- "Selecteren we percentiel 1 t/m &NTL volge
 
 
 
-## ----plotcustomtext,echo=TRUE, fig.width=7.2,fig.height=5----------------
+## ----plotcustomtext,echo=TRUE, fig.width=7.2,fig.height=5---------------------
 plot_cumresponse(data = plot_input,highlight_ntile = 20,custom_plot_text = my_text)
 
-## ----plotcustomcolor,echo=TRUE, fig.width=7.2,fig.height=5---------------
+## ----plotcustomcolor,echo=TRUE, fig.width=7.2,fig.height=5--------------------
 # set scope to compare models, to have several lines in the plots
 plot_input <- plotting_scope(prepared_input = scores_and_ntiles,scope = 'compare_models')
 
@@ -296,7 +296,7 @@ plot_cumgains(data = plot_input,custom_line_colors = RColorBrewer::brewer.pal(2,
 plot_cumlift(data = plot_input,custom_line_colors = c('deepskyblue2','#FF0000'))
 
 
-## ----saveplot,echo=TRUE,eval=FALSE, fig.width=7.2,fig.height=5-----------
+## ----saveplot,echo=TRUE,eval=FALSE, fig.width=7.2,fig.height=5----------------
 #  
 #  # save plot with defaults
 #  plot_cumgains(data = plot_input,save_fig = TRUE)
@@ -311,7 +311,7 @@ plot_cumlift(data = plot_input,custom_line_colors = c('deepskyblue2','#FF0000'))
 #  plot_cumresponse(data = plot_input,save_fig_filename = 'D:\\plot123.png')
 #  
 
-## ----multinom, echo=TRUE, fig.width=7.2,fig.height=5---------------------
+## ----multinom, echo=TRUE, fig.width=7.2,fig.height=5--------------------------
 
 # prepare data for training model for multinomial target td_type and train models
 train_index =  base::sample(seq(1, nrow(bank_td)),size = 0.5*nrow(bank_td) ,replace = FALSE)
